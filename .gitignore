@@ -1,0 +1,12 @@
+# Outputs
+*.exe
+*.o
+
+# Generated file for clangd language server.
+compile_commands.json
+
+# Build directories
+build*
+
+# Cache
+.cache
