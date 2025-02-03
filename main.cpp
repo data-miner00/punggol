@@ -1,78 +1,10 @@
 #include <iostream>
 #include <raylib.h>
 #include <constants.h>
+#include <paddle.h>
+#include <ball.h>
 
 int player1_score = 0, player2_score = 0;
-
-class Ball {
-public:
-    float x, y;
-    int speed_x, speed_y;
-    int radius;
-
-    void draw() {
-        DrawCircle(this->x, this->y, this->radius, WHITE);
-    }
-
-    void update() {
-        x += speed_x;
-        y += speed_y;
-
-        if (y + radius >= GetScreenHeight() || y - radius <= 0) {
-            speed_y *= -1;
-        }
-        if (x + radius >= GetScreenWidth()) {
-            player1_score++;
-            speed_x *= -1;
-        } else if (x - radius <= 0) {
-            player2_score++;
-            speed_x *= -1;
-        }
-    }
-};
-
-class Paddle {
-public:
-    float x, y;
-    float width, height;
-    int speed;
-
-    void draw() {
-        DrawRectangle(x, y, width, height, WHITE);
-    }
-
-    void update() {
-        if (IsKeyDown(KEY_UP)) {
-            y -= speed;
-        }
-        if (IsKeyDown(KEY_DOWN)) {
-            y += speed;
-        }
-        limitMovement();
-    }
-protected:
-    void limitMovement() {
-        if (y <= 0) {
-            y = 0;
-        }
-        if (y >= GetScreenHeight() - height) {
-            y = GetScreenHeight() - height;
-        }
-    }
-};
-
-class AiPaddle: public Paddle {
-public:
-    void update(int ball_y) {
-        if (y + height / 2 > ball_y) {
-            y -= speed;
-        }
-        else {
-            y += speed;
-        }
-        limitMovement();
-    }
-};
 
 int main(void) {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "My punggol game");
