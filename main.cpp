@@ -82,23 +82,23 @@ int main(void) {
     Ball ball;
     ball.x = SCREEN_WIDTH / 2;
     ball.y = SCREEN_HEIGHT / 2;
-    ball.radius = 20;
-    ball.speed_x = 7;
-    ball.speed_y = 7;
+    ball.radius = BALL_RADIUS;
+    ball.speed_x = BALL_SPEED_X;
+    ball.speed_y = BALL_SPEED_Y;
 
     AiPaddle player1;
     player1.x = 10;
     player1.y = SCREEN_HEIGHT / 2 - PADDLE_HEIGHT / 2;
     player1.width = PADDLE_WIDTH;
     player1.height = PADDLE_HEIGHT;
-    player1.speed = 6;
+    player1.speed = PLAYER1_PADDLE_SPEED;
 
     Paddle player2;
     player2.x = SCREEN_WIDTH - PADDLE_WIDTH - 10;
     player2.y = SCREEN_HEIGHT / 2 - PADDLE_HEIGHT / 2;
     player2.width = PADDLE_WIDTH;
     player2.height = PADDLE_HEIGHT;
-    player2.speed = 6;
+    player2.speed = PLAYER2_PADDLE_SPEED;
 
     while (!WindowShouldClose()) {
         BeginDrawing();
@@ -122,11 +122,11 @@ int main(void) {
         player1.draw();
         player2.draw();
 
-        int player1_score_text_width = MeasureText(TextFormat("Player 1: %i", player1_score), 30);
-        int player2_score_text_width = MeasureText(TextFormat("Player 2: %i", player2_score), 30);
+        int player1_score_text_width = MeasureText(TextFormat("Player 1: %i", player1_score), SCORE_FONT_SIZE);
+        int player2_score_text_width = MeasureText(TextFormat("Player 2: %i", player2_score), SCORE_FONT_SIZE);
 
-        DrawText(TextFormat("Player 1: %i", player1_score), SCREEN_WIDTH / 4 - player1_score_text_width / 2, 20, 30, WHITE);
-        DrawText(TextFormat("Player 2: %i", player2_score), SCREEN_WIDTH * 3 / 4 - player2_score_text_width / 2, 20, 30, WHITE);
+        DrawText(TextFormat("Player 1: %i", player1_score), SCREEN_WIDTH / 4 - player1_score_text_width / 2, 20, SCORE_FONT_SIZE, WHITE);
+        DrawText(TextFormat("Player 2: %i", player2_score), SCREEN_WIDTH * 3 / 4 - player2_score_text_width / 2, 20, SCORE_FONT_SIZE, WHITE);
 
         EndDrawing();
     }

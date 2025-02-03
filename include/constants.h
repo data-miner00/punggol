@@ -4,4 +4,11 @@
 #define FPS 60
 #define PADDLE_HEIGHT 120
 #define PADDLE_WIDTH 25
+#define BALL_RADIUS 20
+#define BALL_SPEED_X 7
+#define BALL_SPEED_Y 7
+#define PLAYER1_PADDLE_SPEED 6
+#define PLAYER2_PADDLE_SPEED 6
+#define SCORE_FONT_SIZE 30
+
 
