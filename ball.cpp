@@ -1,5 +1,11 @@
 #include <ball.h>
 #include <raylib.h>
+#include <state.h>
+
+Ball::Ball(State& state) : state(state) {}
+// Ball::Ball(State& state) {
+//     this->state = state;
+// }
 
 void Ball::draw() {
     DrawCircle(this->x, this->y, this->radius, WHITE);
@@ -13,10 +19,10 @@ void Ball::update() {
         speed_y *= -1;
     }
     if (x + radius >= GetScreenWidth()) {
-        // increment score here
+        state.player1_score++;
         speed_x *= -1;
     } else if (x - radius <= 0) {
-        // increment score here
+        state.player2_score++;
         speed_x *= -1;
     }
 }

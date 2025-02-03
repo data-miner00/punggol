@@ -3,15 +3,16 @@
 #include <constants.h>
 #include <paddle.h>
 #include <ball.h>
-
-int player1_score = 0, player2_score = 0;
+#include <state.h>
 
 int main(void) {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "My punggol game");
     SetTargetFPS(FPS);
     SetExitKey(KEY_Q);
 
-    Ball ball;
+    State state;
+
+    Ball ball{ state };
     ball.x = SCREEN_WIDTH / 2;
     ball.y = SCREEN_HEIGHT / 2;
     ball.radius = BALL_RADIUS;
@@ -54,11 +55,11 @@ int main(void) {
         player1.draw();
         player2.draw();
 
-        int player1_score_text_width = MeasureText(TextFormat("Player 1: %i", player1_score), SCORE_FONT_SIZE);
-        int player2_score_text_width = MeasureText(TextFormat("Player 2: %i", player2_score), SCORE_FONT_SIZE);
+        int player1_score_text_width = MeasureText(TextFormat("Player 1: %i", state.player1_score), SCORE_FONT_SIZE);
+        int player2_score_text_width = MeasureText(TextFormat("Player 2: %i", state.player2_score), SCORE_FONT_SIZE);
 
-        DrawText(TextFormat("Player 1: %i", player1_score), SCREEN_WIDTH / 4 - player1_score_text_width / 2, 20, SCORE_FONT_SIZE, WHITE);
-        DrawText(TextFormat("Player 2: %i", player2_score), SCREEN_WIDTH * 3 / 4 - player2_score_text_width / 2, 20, SCORE_FONT_SIZE, WHITE);
+        DrawText(TextFormat("Player 1: %i", state.player1_score), SCREEN_WIDTH / 4 - player1_score_text_width / 2, 20, SCORE_FONT_SIZE, WHITE);
+        DrawText(TextFormat("Player 2: %i", state.player2_score), SCREEN_WIDTH * 3 / 4 - player2_score_text_width / 2, 20, SCORE_FONT_SIZE, WHITE);
 
         EndDrawing();
     }
