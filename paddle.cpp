@@ -1,4 +1,5 @@
 #include <paddle.h>
+#include <raylib.h>
 
 void Paddle::draw() {
     DrawRectangle(x, y, width, height, WHITE);

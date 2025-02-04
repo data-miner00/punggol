@@ -4,6 +4,11 @@
 #include <paddle.h>
 #include <ball.h>
 #include <state.h>
+#include <string>
+
+#define RAYGUI_IMPLEMENTATION
+#include <raygui.h>
+
 
 int main(void) {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "My punggol game");
@@ -33,8 +38,26 @@ int main(void) {
     player2.height = PADDLE_HEIGHT;
     player2.speed = PLAYER2_PADDLE_SPEED;
 
+    char name[255];
+    Rectangle nbounds = { SCREEN_WIDTH / 2 - 700 / 2, SCREEN_HEIGHT / 2 - 300 / 2, 700, 300 };
+    const char* title = "Player name";
+    const char* text = "Enter your name";
+    const char* button = "Ok";
+    bool secret_view = false;
+    bool in_menu = true;
+    int text_input_result = -1;
+
     while (!WindowShouldClose()) {
         BeginDrawing();
+        ClearBackground(BLACK);
+
+        if (text_input_result == -1) {
+            text_input_result = GuiTextInputBox(nbounds, title, text, button, name, 255, &secret_view);
+            std::cout << text_input_result;
+            EndDrawing();
+            continue;
+        }
+
         ball.update();
         player1.update(ball.y);
         player2.update();
@@ -46,8 +69,6 @@ int main(void) {
             ball.speed_x *= -1;
         }
 
-        ClearBackground(BLACK);
-
         DrawLine(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT, WHITE);
 
         ball.draw();
@@ -55,11 +76,19 @@ int main(void) {
         player1.draw();
         player2.draw();
 
-        int player1_score_text_width = MeasureText(TextFormat("Player 1: %i", state.player1_score), SCORE_FONT_SIZE);
-        int player2_score_text_width = MeasureText(TextFormat("Player 2: %i", state.player2_score), SCORE_FONT_SIZE);
+        const char* player1_label = TextFormat("Player 1: %i", state.player1_score);
+        const char* player2_label = TextFormat("%s: %i", name, state.player2_score);
 
-        DrawText(TextFormat("Player 1: %i", state.player1_score), SCREEN_WIDTH / 4 - player1_score_text_width / 2, 20, SCORE_FONT_SIZE, WHITE);
-        DrawText(TextFormat("Player 2: %i", state.player2_score), SCREEN_WIDTH * 3 / 4 - player2_score_text_width / 2, 20, SCORE_FONT_SIZE, WHITE);
+        int player1_score_text_width = MeasureText(player1_label, SCORE_FONT_SIZE);
+        int player2_score_text_width = MeasureText(player2_label, SCORE_FONT_SIZE);
+
+        DrawText(player1_label, SCREEN_WIDTH / 4 - player1_score_text_width / 2, 20, SCORE_FONT_SIZE, WHITE);
+        DrawText(player2_label, SCREEN_WIDTH * 3 / 4 - player2_score_text_width / 2, 20, SCORE_FONT_SIZE, WHITE);
+
+        // respawn middle
+        // acceleration
+        // multi balls (how many)
+        // extend length
 
         EndDrawing();
     }
