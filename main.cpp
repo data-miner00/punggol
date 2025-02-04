@@ -1,3 +1,4 @@
+#include <ios>
 #include <iostream>
 #include <raylib.h>
 #include <constants.h>
@@ -5,6 +6,7 @@
 #include <ball.h>
 #include <state.h>
 #include <string>
+#include <iomanip>
 
 #define RAYGUI_IMPLEMENTATION
 #include <raygui.h>
@@ -24,14 +26,14 @@ int main(void) {
     ball.speed_x = BALL_SPEED_X;
     ball.speed_y = BALL_SPEED_Y;
 
-    AiPaddle player1;
+    AiPaddle player1{ state };
     player1.x = 10;
     player1.y = SCREEN_HEIGHT / 2 - PADDLE_HEIGHT / 2;
     player1.width = PADDLE_WIDTH;
     player1.height = PADDLE_HEIGHT;
     player1.speed = PLAYER1_PADDLE_SPEED;
 
-    Paddle player2;
+    Paddle player2{ state };
     player2.x = SCREEN_WIDTH - PADDLE_WIDTH - 10;
     player2.y = SCREEN_HEIGHT / 2 - PADDLE_HEIGHT / 2;
     player2.width = PADDLE_WIDTH;
@@ -46,14 +48,19 @@ int main(void) {
     bool secret_view = false;
     bool in_menu = true;
     int text_input_result = -1;
+    std::cout << std::boolalpha;
 
     while (!WindowShouldClose()) {
+        if (IsKeyPressed(KEY_P)) {
+            state.isPaused = !state.isPaused;
+        }
+
         BeginDrawing();
+
         ClearBackground(BLACK);
 
         if (text_input_result == -1) {
             text_input_result = GuiTextInputBox(nbounds, title, text, button, name, 255, &secret_view);
-            std::cout << text_input_result;
             EndDrawing();
             continue;
         }
@@ -89,6 +96,11 @@ int main(void) {
         // acceleration
         // multi balls (how many)
         // extend length
+
+        if (state.isPaused) {
+            int pause_width = MeasureText("PAUSED", 40);
+            DrawText("PAUSED", SCREEN_WIDTH / 2 - pause_width / 2, SCREEN_HEIGHT / 2 - 40 / 2, 40, WHITE);
+        }
 
         EndDrawing();
     }

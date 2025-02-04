@@ -1,11 +1,18 @@
 #include <paddle.h>
 #include <raylib.h>
+#include <state.h>
+
+Paddle::Paddle(State& state) : state(state) {}
 
 void Paddle::draw() {
     DrawRectangle(x, y, width, height, WHITE);
 }
 
 void Paddle::update() {
+    if (state.isPaused) {
+        return;
+    }
+
     if (IsKeyDown(KEY_UP)) {
         y -= speed;
     }
@@ -24,7 +31,13 @@ void Paddle::limitMovement() {
     }
 }
 
+AiPaddle::AiPaddle(State& state) : Paddle(state) {}
+
 void AiPaddle::update(int ball_y) {
+    if (state.isPaused) {
+        return;
+    }
+
     if (y + height / 2 > ball_y) {
         y -= speed;
     }

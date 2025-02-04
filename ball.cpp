@@ -12,6 +12,10 @@ void Ball::draw() {
 }
 
 void Ball::update() {
+    if (state.isPaused) {
+        return;
+    }
+
     x += speed_x;
     y += speed_y;
 
