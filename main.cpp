@@ -11,6 +11,7 @@
 #define RAYGUI_IMPLEMENTATION
 #include <raygui.h>
 
+#define ARRAY_SIZE(A) (sizeof(A)/sizeof(A[0]))
 
 int main(void) {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "My punggol game");
@@ -18,8 +19,9 @@ int main(void) {
     SetExitKey(KEY_Q);
 
     State state;
+    Screen currentScreen = EnterUsername;
 
-    Ball ball{ state };
+    Ball ball{ state, WHITE };
     ball.x = SCREEN_WIDTH / 2;
     ball.y = SCREEN_HEIGHT / 2;
     ball.radius = BALL_RADIUS;
@@ -50,6 +52,15 @@ int main(void) {
     int text_input_result = -1;
     std::cout << std::boolalpha;
 
+    Rectangle selectGreenButton = { SCREEN_WIDTH / 4 - 300 / 2, SCREEN_HEIGHT / 2 - 150 / 2, 300, 150 };
+    Rectangle selectBlueButton = { SCREEN_WIDTH  * 3 / 4 - 300 / 2, SCREEN_HEIGHT / 2 - 150 / 2, 300, 150 };
+
+    int btnState = 0;               // Button state: 0-NORMAL, 1-MOUSE_HOVER, 2-PRESSED
+    bool btnAction = false, btnAction2 = false;
+
+    Vector2 mousePoint = { 0.0f, 0.0f };
+    Color ballColor = WHITE;
+
     while (!WindowShouldClose()) {
         if (IsKeyPressed(KEY_P)) {
             state.isPaused = !state.isPaused;
@@ -61,9 +72,53 @@ int main(void) {
 
         if (text_input_result == -1) {
             text_input_result = GuiTextInputBox(nbounds, title, text, button, name, 255, &secret_view);
+            currentScreen = GameSelection;
             EndDrawing();
             continue;
         }
+
+        if (currentScreen == GameSelection) {
+            DrawRectangleRec(selectGreenButton, GREEN);
+            DrawRectangleRec(selectBlueButton, BLUE);
+
+            mousePoint = GetMousePosition();
+            btnAction = false;
+
+            // Check button state
+            if (CheckCollisionPointRec(mousePoint, selectGreenButton))
+            {
+                if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) btnState = 2;
+                else btnState = 1;
+
+                if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) btnAction = true;
+            }
+            else btnState = 0;
+
+            if (btnAction)
+            {
+                ball.color = GREEN;
+                currentScreen = Pong;
+            }
+
+            if (CheckCollisionPointRec(mousePoint, selectBlueButton))
+            {
+                if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) btnState = 2;
+                else btnState = 1;
+
+                if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) btnAction2 = true;
+            }
+            else btnState = 0;
+
+            if (btnAction2)
+            {
+                ball.color = BLUE;
+                currentScreen = Pong;
+            }
+
+            EndDrawing();
+            continue;
+        }
+
 
         ball.update();
         player1.update(ball.y);

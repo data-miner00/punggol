@@ -2,13 +2,13 @@
 #include <raylib.h>
 #include <state.h>
 
-Ball::Ball(State& state) : state(state) {}
+Ball::Ball(State& state, Color color) : state(state), color(color) {}
 // Ball::Ball(State& state) {
 //     this->state = state;
 // }
 
 void Ball::draw() {
-    DrawCircle(this->x, this->y, this->radius, WHITE);
+    DrawCircle(this->x, this->y, this->radius, this->color);
 }
 
 void Ball::update() {
