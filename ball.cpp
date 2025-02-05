@@ -24,10 +24,20 @@ void Ball::update() {
     }
     if (x + radius >= GetScreenWidth()) {
         state.player1_score++;
-        speed_x *= -1;
+
+        if (state.respawnMiddle) {
+            reset();
+        } else {
+            speed_x *= -1;
+        }
     } else if (x - radius <= 0) {
         state.player2_score++;
-        speed_x *= -1;
+
+        if (state.respawnMiddle) {
+            reset();
+        } else {
+            speed_x *= -1;
+        }
     }
 }
 
