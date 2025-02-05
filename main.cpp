@@ -61,6 +61,8 @@ int main(void) {
 
     Vector2 mousePoint = { 0.0f, 0.0f };
     Color ballColor = WHITE;
+    long timestamp = 0;
+    bool blinkShow = true;
 
     while (!WindowShouldClose()) {
         if (IsKeyPressed(KEY_P)) {
@@ -167,8 +169,14 @@ int main(void) {
         // extend length
 
         if (state.isPaused) {
-            int pause_width = MeasureText("PAUSED", 40);
-            DrawText("PAUSED", SCREEN_WIDTH / 2 - pause_width / 2, SCREEN_HEIGHT / 2 - 40 / 2, 40, WHITE);
+            timestamp++;
+            if (timestamp % 60 == 0) {
+                blinkShow = !blinkShow;
+            }
+            if (blinkShow) {
+                int pause_width = MeasureText("PAUSED", 40);
+                DrawText("PAUSED", SCREEN_WIDTH / 2 - pause_width / 2, SCREEN_HEIGHT / 2 - 40 / 2, 40, WHITE);
+            }
         }
 
         EndDrawing();
