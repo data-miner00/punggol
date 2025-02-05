@@ -6,6 +6,12 @@ enum Screen {
     Pong,
 };
 
+enum ButtonState {
+    Normal,
+    Hover,
+    Pressed,
+};
+
 class State {
 public:
     bool isPaused = false;
@@ -17,5 +23,6 @@ public:
     Screen currentScreen = EnterUsername;
 
     bool IsGameOver(void);
+    void AdvanceScreen(void);
 };
 

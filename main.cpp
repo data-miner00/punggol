@@ -5,11 +5,10 @@
 #include <ball.h>
 #include <state.h>
 #include <fstream>
+#include <macros.h>
 
 #define RAYGUI_IMPLEMENTATION
 #include <raygui.h>
-
-#define ARRAY_SIZE(A) (sizeof(A)/sizeof(A[0]))
 
 int main(void) {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "My punggol game");
@@ -78,7 +77,6 @@ int main(void) {
 
         if (text_input_result == -1) {
             text_input_result = GuiTextInputBox(nbounds, title, text, button, name, 255, &secret_view);
-            state.currentScreen = GameSelection;
             EndDrawing();
 
             if (text_input_result == 1) {
@@ -91,6 +89,7 @@ int main(void) {
                 }
 
                 inFile.close();
+                state.AdvanceScreen();
             }
 
             continue;
@@ -116,7 +115,7 @@ int main(void) {
             if (btnAction)
             {
                 ball.color = GREEN;
-                state.currentScreen = Pong;
+                state.AdvanceScreen();
             }
 
             if (CheckCollisionPointRec(mousePoint, selectBlueButton))
@@ -131,7 +130,7 @@ int main(void) {
             if (btnAction2)
             {
                 ball.color = BLUE;
-                state.currentScreen = Pong;
+                state.AdvanceScreen();
             }
 
             EndDrawing();
