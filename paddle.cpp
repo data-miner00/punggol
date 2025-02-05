@@ -1,6 +1,7 @@
 #include <paddle.h>
 #include <raylib.h>
 #include <state.h>
+#include <iostream>
 
 Paddle::Paddle(State& state) : state(state) {}
 
@@ -29,6 +30,19 @@ void Paddle::limitMovement() {
     if (y >= GetScreenHeight() - height) {
         y = GetScreenHeight() - height;
     }
+}
+
+std::istream& operator >> (std::istream& in, Paddle& p) {
+    std::getline(in, p.name);
+    in >> p.highScore;
+    in.ignore();
+    return in;
+}
+
+std::ostream& operator << (std::ostream& out, const Paddle& p) {
+    out << p.name << std::endl;
+    out << p.highScore << std::endl;
+    return out;
 }
 
 AiPaddle::AiPaddle(State& state) : Paddle(state) {}

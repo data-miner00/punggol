@@ -7,6 +7,7 @@
 #include <state.h>
 #include <string>
 #include <iomanip>
+#include <fstream>
 
 #define RAYGUI_IMPLEMENTATION
 #include <raygui.h>
@@ -74,6 +75,19 @@ int main(void) {
             text_input_result = GuiTextInputBox(nbounds, title, text, button, name, 255, &secret_view);
             currentScreen = GameSelection;
             EndDrawing();
+
+            if (text_input_result == 1) {
+                std::ifstream inFile(strcat(name, ".txt"));
+                if (inFile.is_open()) {
+                    inFile >> player2;
+                    std::cout << "Player " << player2.name << " loaded with high score " << player2.highScore << ".\n";
+                } else {
+                    TraceLog(LOG_WARNING, "File not found");
+                }
+
+                inFile.close();
+            }
+
             continue;
         }
 
@@ -159,7 +173,17 @@ int main(void) {
 
         EndDrawing();
     }
+    
+    // Save data
+    if (state.player2_score > player2.highScore) {
+        player2.highScore = state.player2_score;
+        std::ofstream outFile (name);
+        outFile << player2;
+        outFile.close();
+        std::cout << "File saved\n";
+    }
 
     CloseWindow();
+
     return 0;
 }
