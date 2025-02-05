@@ -135,6 +135,12 @@ int main(void) {
             continue;
         }
 
+        if (state.IsGameOver()) {
+            const char* game_over_label = "Game Over";
+            int label_width = MeasureText(game_over_label, 50);
+
+            DrawText(game_over_label, SCREEN_WIDTH / 2 - label_width / 2, SCREEN_HEIGHT / 2 - 25, 50, WHITE);
+        }
 
         ball.update();
         player1.update(ball.y);
@@ -181,7 +187,7 @@ int main(void) {
 
         EndDrawing();
     }
-    
+
     // Save data
     if (state.player2_score > player2.highScore) {
         player2.highScore = state.player2_score;
