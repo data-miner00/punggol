@@ -1,12 +1,9 @@
-#include <ios>
 #include <iostream>
 #include <raylib.h>
 #include <constants.h>
 #include <paddle.h>
 #include <ball.h>
 #include <state.h>
-#include <string>
-#include <iomanip>
 #include <fstream>
 
 #define RAYGUI_IMPLEMENTATION
@@ -20,7 +17,6 @@ int main(void) {
     SetExitKey(KEY_Q);
 
     State state;
-    Screen currentScreen = EnterUsername;
 
     Ball ball{ state, WHITE };
     ball.x = SCREEN_WIDTH / 2;
@@ -58,7 +54,6 @@ int main(void) {
     bool secret_view = false;
     bool in_menu = true;
     int text_input_result = -1;
-    std::cout << std::boolalpha;
 
     Rectangle selectGreenButton = { SCREEN_WIDTH / 4 - 300 / 2, SCREEN_HEIGHT / 2 - 150 / 2, 300, 150 };
     Rectangle selectBlueButton = { SCREEN_WIDTH  * 3 / 4 - 300 / 2, SCREEN_HEIGHT / 2 - 150 / 2, 300, 150 };
@@ -67,7 +62,6 @@ int main(void) {
     bool btnAction = false, btnAction2 = false;
 
     Vector2 mousePoint = { 0.0f, 0.0f };
-    Color ballColor = WHITE;
     long timestamp = 0;
     bool blinkShow = true;
     // make togglable
@@ -84,7 +78,7 @@ int main(void) {
 
         if (text_input_result == -1) {
             text_input_result = GuiTextInputBox(nbounds, title, text, button, name, 255, &secret_view);
-            currentScreen = GameSelection;
+            state.currentScreen = GameSelection;
             EndDrawing();
 
             if (text_input_result == 1) {
@@ -102,7 +96,7 @@ int main(void) {
             continue;
         }
 
-        if (currentScreen == GameSelection) {
+        if (state.currentScreen == GameSelection) {
             DrawRectangleRec(selectGreenButton, GREEN);
             DrawRectangleRec(selectBlueButton, BLUE);
 
@@ -122,7 +116,7 @@ int main(void) {
             if (btnAction)
             {
                 ball.color = GREEN;
-                currentScreen = Pong;
+                state.currentScreen = Pong;
             }
 
             if (CheckCollisionPointRec(mousePoint, selectBlueButton))
@@ -137,13 +131,14 @@ int main(void) {
             if (btnAction2)
             {
                 ball.color = BLUE;
-                currentScreen = Pong;
+                state.currentScreen = Pong;
             }
 
             EndDrawing();
             continue;
         }
 
+        // todo: Freeze when game over
         if (state.IsGameOver()) {
             const char* game_over_label = "Game Over";
             int label_width = MeasureText(game_over_label, 50);
@@ -177,7 +172,6 @@ int main(void) {
         DrawLine(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT, WHITE);
 
         ball.draw();
-
         player1.draw();
 
         if (!aiMode) {
