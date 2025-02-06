@@ -57,14 +57,10 @@ int main(void) {
     Rectangle selectGreenButton = { SCREEN_WIDTH / 4 - 300 / 2, SCREEN_HEIGHT / 2 - 150 / 2, 300, 150 };
     Rectangle selectBlueButton = { SCREEN_WIDTH  * 3 / 4 - 300 / 2, SCREEN_HEIGHT / 2 - 150 / 2, 300, 150 };
 
-    int btnState = 0;               // Button state: 0-NORMAL, 1-MOUSE_HOVER, 2-PRESSED
+    int btnState = Normal;
     bool btnAction = false, btnAction2 = false;
 
     Vector2 mousePoint = { 0.0f, 0.0f };
-    long timestamp = 0;
-    bool blinkShow = true;
-    // make togglable
-    bool aiMode = false;
 
     while (!WindowShouldClose()) {
         if (IsKeyPressed(KEY_P)) {
@@ -75,6 +71,7 @@ int main(void) {
 
         ClearBackground(BLACK);
 
+        // First screen
         if (text_input_result == -1) {
             text_input_result = GuiTextInputBox(nbounds, title, text, button, name, 255, &secret_view);
             EndDrawing();
@@ -95,7 +92,9 @@ int main(void) {
             continue;
         }
 
+        // Second screen
         if (state.currentScreen == GameSelection) {
+            const char* selectBallColor = "Select ball color";
             DrawRectangleRec(selectGreenButton, GREEN);
             DrawRectangleRec(selectBlueButton, BLUE);
 
@@ -105,12 +104,12 @@ int main(void) {
             // Check button state
             if (CheckCollisionPointRec(mousePoint, selectGreenButton))
             {
-                if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) btnState = 2;
-                else btnState = 1;
+                if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) btnState = Pressed;
+                else btnState = Hover;
 
                 if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) btnAction = true;
             }
-            else btnState = 0;
+            else btnState = Normal;
 
             if (btnAction)
             {
@@ -120,12 +119,12 @@ int main(void) {
 
             if (CheckCollisionPointRec(mousePoint, selectBlueButton))
             {
-                if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) btnState = 2;
-                else btnState = 1;
+                if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) btnState = Pressed;
+                else btnState = Hover;
 
                 if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) btnAction2 = true;
             }
-            else btnState = 0;
+            else btnState = Normal;
 
             if (btnAction2)
             {
@@ -148,7 +147,7 @@ int main(void) {
         ball.update();
         player1.update(ball.y);
 
-        if (!aiMode) {
+        if (!state.aiMode) {
             player2.update();
         } else {
             player3.update(ball.y);
@@ -158,7 +157,7 @@ int main(void) {
             ball.speed_x *= -1;
         }
 
-        if (!aiMode) {
+        if (!state.aiMode) {
             if (CheckCollisionCircleRec(Vector2{ball.x, ball.y}, ball.radius, Rectangle{player2.x, player2.y, player2.width, player2.height})) {
                 ball.speed_x *= -1;
             }
@@ -173,7 +172,7 @@ int main(void) {
         ball.draw();
         player1.draw();
 
-        if (!aiMode) {
+        if (!state.aiMode) {
             player2.draw();
         } else {
             player3.draw();
@@ -193,11 +192,11 @@ int main(void) {
         // extend length
 
         if (state.isPaused) {
-            timestamp++;
-            if (timestamp % 60 == 0) {
-                blinkShow = !blinkShow;
+            state.pausedTimestamp++;
+            if (state.pausedTimestamp % 60 == 0) {
+                state.blinkShow = !state.blinkShow;
             }
-            if (blinkShow) {
+            if (state.blinkShow) {
                 int pause_width = MeasureText("PAUSED", 40);
                 DrawText("PAUSED", SCREEN_WIDTH / 2 - pause_width / 2, SCREEN_HEIGHT / 2 - 40 / 2, 40, WHITE);
             }

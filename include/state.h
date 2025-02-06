@@ -1,4 +1,5 @@
 #pragma once
+#include <raylib.h>
 
 enum Screen {
     EnterUsername,
@@ -21,7 +22,13 @@ public:
     bool respawnMiddle = true;
 
     Screen currentScreen = EnterUsername;
+    Color ballColor = WHITE;
 
+    long pausedTimestamp = 0;
+    bool blinkShow = true;
+    bool aiMode = false;
+
+public:
     bool IsGameOver(void);
     void AdvanceScreen(void);
 };
