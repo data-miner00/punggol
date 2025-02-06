@@ -29,6 +29,7 @@ public:
     bool blinkShow = true;
     bool aiMode = false;
 
+    Vector2 mousePoint = { .0f, .0f };
 public:
     bool IsGameOver(void);
     void AdvanceScreen(void);

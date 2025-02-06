@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <state.h>
+#include <ball.h>
 
 class Paddle {
 public:
@@ -17,6 +18,7 @@ public:
     void update();
     void loadDataFromFile(void);
     void saveData(int);
+    bool checkCollisionWithBall(Ball&);
 
     friend std::istream& operator >> (std::istream&, Paddle&);
     friend std::ostream& operator << (std::ostream&, const Paddle&);

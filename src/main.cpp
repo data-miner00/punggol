@@ -4,9 +4,9 @@
 #include <ball.h>
 #include <state.h>
 #include <macros.h>
+#include <ui.h>
+#include <cstring>
 
-#define RAYGUI_IMPLEMENTATION
-#include <raygui.h>
 
 int main(void) {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "My punggol game");
@@ -16,8 +16,8 @@ int main(void) {
     State state;
 
     Ball ball{ state, WHITE };
-    ball.x = SCREEN_WIDTH / 2;
-    ball.y = SCREEN_HEIGHT / 2;
+    ball.x = float(SCREEN_WIDTH) / 2;
+    ball.y = float(SCREEN_HEIGHT) / 2;
     ball.radius = BALL_RADIUS;
     ball.speed_x = BALL_SPEED_X;
     ball.speed_y = BALL_SPEED_Y;
@@ -44,11 +44,6 @@ int main(void) {
     player3.speed = PLAYER2_PADDLE_SPEED;
 
     char name[255];
-    Rectangle nbounds = { float(SCREEN_WIDTH) / 2 - 700. / 2, float(SCREEN_HEIGHT) / 2 - 300. / 2, 700, 300 };
-    const char* title = "Player name";
-    const char* text = "Enter your name";
-    const char* button = "Ok";
-    bool secret_view = false;
     int text_input_result = -1;
 
     Rectangle selectGreenButton = { float(SCREEN_WIDTH) / 4 - 300. / 2, float(SCREEN_HEIGHT) / 2 - 150. / 2, 300, 150 };
@@ -56,8 +51,6 @@ int main(void) {
 
     int btnState = Normal;
     bool btnAction = false, btnAction2 = false;
-
-    Vector2 mousePoint = { 0.0f, 0.0f };
 
     while (!WindowShouldClose()) {
         if (IsKeyPressed(KEY_P)) {
@@ -70,7 +63,7 @@ int main(void) {
 
         // First screen
         if (text_input_result == -1) {
-            text_input_result = GuiTextInputBox(nbounds, title, text, button, name, 255, &secret_view);
+            text_input_result = GetNameFromUser(name);
             EndDrawing();
 
             if (text_input_result == 1) {
@@ -84,15 +77,14 @@ int main(void) {
 
         // Second screen
         if (state.currentScreen == GameSelection) {
-            const char* selectBallColor = "Select ball color";
             DrawRectangleRec(selectGreenButton, GREEN);
             DrawRectangleRec(selectBlueButton, BLUE);
 
-            mousePoint = GetMousePosition();
+            state.mousePoint = GetMousePosition();
             btnAction = false;
 
             // Check button state
-            if (CheckCollisionPointRec(mousePoint, selectGreenButton))
+            if (CheckCollisionPointRec(state.mousePoint, selectGreenButton))
             {
                 if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) btnState = Pressed;
                 else btnState = Hover;
@@ -107,7 +99,7 @@ int main(void) {
                 state.AdvanceScreen();
             }
 
-            if (CheckCollisionPointRec(mousePoint, selectBlueButton))
+            if (CheckCollisionPointRec(state.mousePoint, selectBlueButton))
             {
                 if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) btnState = Pressed;
                 else btnState = Hover;
@@ -128,10 +120,7 @@ int main(void) {
 
         // todo: Freeze when game over
         if (state.IsGameOver()) {
-            const char* game_over_label = "Game Over";
-            int label_width = MeasureText(game_over_label, 50);
-
-            DrawText(game_over_label, SCREEN_WIDTH / 2 - label_width / 2, SCREEN_HEIGHT / 2 - 25, 50, WHITE);
+            DrawGameOver();
         }
 
         ball.update();
@@ -143,16 +132,16 @@ int main(void) {
             player3.update(ball.y);
         }
 
-        if (CheckCollisionCircleRec(Vector2{ball.x, ball.y}, ball.radius, Rectangle{player1.x, player1.y, player1.width, player1.height})) {
+        if (player1.checkCollisionWithBall(ball)) {
             ball.speed_x *= -1;
         }
 
         if (!state.aiMode) {
-            if (CheckCollisionCircleRec(Vector2{ball.x, ball.y}, ball.radius, Rectangle{player2.x, player2.y, player2.width, player2.height})) {
+            if (player2.checkCollisionWithBall(ball)) {
                 ball.speed_x *= -1;
             }
         } else {
-            if (CheckCollisionCircleRec(Vector2{ball.x, ball.y}, ball.radius, Rectangle{player3.x, player3.y, player3.width, player3.height})) {
+            if (player3.checkCollisionWithBall(ball)) {
                 ball.speed_x *= -1;
             }
         }

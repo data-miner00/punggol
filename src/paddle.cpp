@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <string.h>
+#include <ball.h>
 
 void concat(char* s1, char* s2, char* ns) {
     ns[0] = '\0';
@@ -74,6 +75,12 @@ void Paddle::saveData(int currentScore) {
         outFile.close();
         TraceLog(LOG_INFO, "File saved");
     }
+}
+
+bool Paddle::checkCollisionWithBall(Ball& ball) {
+    Rectangle bounds { this->x, this->y, this->width, this->height };
+    Vector2 ball_position { ball.x, ball.y };
+    return CheckCollisionCircleRec(ball_position, ball.radius, bounds);
 }
 
 AiPaddle::AiPaddle(State& state) : Paddle(state) {}
