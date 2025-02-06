@@ -1,14 +1,13 @@
 #pragma once
 #include <iostream>
 #include <state.h>
-#include <string>
 
 class Paddle {
 public:
     float x, y;
     float width, height;
     int speed;
-    std::string name;
+    char name[255];
     int highScore = 0;
 
 
@@ -16,6 +15,8 @@ public:
 
     void draw();
     void update();
+    void loadDataFromFile(void);
+    void saveData(int);
 
     friend std::istream& operator >> (std::istream&, Paddle&);
     friend std::ostream& operator << (std::ostream&, const Paddle&);

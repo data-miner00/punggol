@@ -2,6 +2,14 @@
 #include <raylib.h>
 #include <state.h>
 #include <iostream>
+#include <fstream>
+#include <string.h>
+
+void concat(char* s1, char* s2, char* ns) {
+    ns[0] = '\0';
+    strcpy(ns, s1);
+    strcat(ns, s2);
+}
 
 Paddle::Paddle(State& state) : state(state) {}
 
@@ -33,7 +41,7 @@ void Paddle::limitMovement() {
 }
 
 std::istream& operator >> (std::istream& in, Paddle& p) {
-    std::getline(in, p.name);
+    in >> p.name;
     in >> p.highScore;
     in.ignore();
     return in;
@@ -43,6 +51,29 @@ std::ostream& operator << (std::ostream& out, const Paddle& p) {
     out << p.name << std::endl;
     out << p.highScore << std::endl;
     return out;
+}
+
+void Paddle::loadDataFromFile() {
+    char txtExtension[] = ".txt";
+    char saveFile[strlen(this->name) + strlen(txtExtension) + 1];
+    concat(this->name, txtExtension, saveFile);
+    std::ifstream inFile(saveFile);
+    if (inFile.is_open()) {
+        inFile >> this->highScore;
+    }
+    inFile.close();
+}
+
+void Paddle::saveData(int currentScore) {
+    char txtExtension[] = ".txt";
+    if (currentScore > this->highScore) {
+        char saveFile[strlen(this->name) + strlen(txtExtension) + 1];
+        concat(this->name, txtExtension, saveFile);
+        std::ofstream outFile (saveFile);
+        outFile << currentScore;
+        outFile.close();
+        TraceLog(LOG_INFO, "File saved");
+    }
 }
 
 AiPaddle::AiPaddle(State& state) : Paddle(state) {}

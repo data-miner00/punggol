@@ -1,10 +1,8 @@
-#include <iostream>
 #include <raylib.h>
 #include <constants.h>
 #include <paddle.h>
 #include <ball.h>
 #include <state.h>
-#include <fstream>
 #include <macros.h>
 
 #define RAYGUI_IMPLEMENTATION
@@ -51,7 +49,6 @@ int main(void) {
     const char* text = "Enter your name";
     const char* button = "Ok";
     bool secret_view = false;
-    bool in_menu = true;
     int text_input_result = -1;
 
     Rectangle selectGreenButton = { float(SCREEN_WIDTH) / 4 - 300. / 2, float(SCREEN_HEIGHT) / 2 - 150. / 2, 300, 150 };
@@ -77,15 +74,8 @@ int main(void) {
             EndDrawing();
 
             if (text_input_result == 1) {
-                std::ifstream inFile(strcat(name, ".txt"));
-                if (inFile.is_open()) {
-                    inFile >> player2;
-                    std::cout << "Player " << player2.name << " loaded with high score " << player2.highScore << ".\n";
-                } else {
-                    TraceLog(LOG_WARNING, "File not found");
-                }
-
-                inFile.close();
+                strcpy(player2.name, name);
+                player2.loadDataFromFile();
                 state.AdvanceScreen();
             }
 
@@ -187,10 +177,6 @@ int main(void) {
         DrawText(player1_label, SCREEN_WIDTH / 4 - player1_score_text_width / 2, 20, SCORE_FONT_SIZE, WHITE);
         DrawText(player2_label, SCREEN_WIDTH * 3 / 4 - player2_score_text_width / 2, 20, SCORE_FONT_SIZE, WHITE);
 
-        // acceleration
-        // multi balls (how many)
-        // extend length
-
         if (state.isPaused) {
             state.pausedTimestamp++;
             if (state.pausedTimestamp % 60 == 0) {
@@ -205,16 +191,8 @@ int main(void) {
         EndDrawing();
     }
 
-    // Save data
-    if (state.player2_score > player2.highScore) {
-        player2.highScore = state.player2_score;
-        std::ofstream outFile (name);
-        outFile << player2;
-        outFile.close();
-        std::cout << "File saved\n";
-    }
+    player2.saveData(state.player2_score);
 
     CloseWindow();
-
     return 0;
 }
