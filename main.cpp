@@ -26,27 +26,27 @@ int main(void) {
 
     AiPaddle player1{ state };
     player1.x = 10;
-    player1.y = SCREEN_HEIGHT / 2 - PADDLE_HEIGHT / 2;
+    player1.y = float(SCREEN_HEIGHT) / 2 - float(PADDLE_HEIGHT) / 2;
     player1.width = PADDLE_WIDTH;
     player1.height = PADDLE_HEIGHT;
     player1.speed = PLAYER1_PADDLE_SPEED;
 
     Paddle player2{ state };
     player2.x = SCREEN_WIDTH - PADDLE_WIDTH - 10;
-    player2.y = SCREEN_HEIGHT / 2 - PADDLE_HEIGHT / 2;
+    player2.y = float(SCREEN_HEIGHT) / 2 - float(PADDLE_HEIGHT) / 2;
     player2.width = PADDLE_WIDTH;
     player2.height = PADDLE_HEIGHT;
     player2.speed = PLAYER2_PADDLE_SPEED;
 
     AiPaddle player3{ state };
     player3.x = SCREEN_WIDTH - PADDLE_WIDTH - 10;
-    player3.y = SCREEN_HEIGHT / 2 - PADDLE_HEIGHT / 2;
+    player3.y = float(SCREEN_HEIGHT) / 2 - float(PADDLE_HEIGHT) / 2;
     player3.width = PADDLE_WIDTH;
     player3.height = PADDLE_HEIGHT;
     player3.speed = PLAYER2_PADDLE_SPEED;
 
     char name[255];
-    Rectangle nbounds = { SCREEN_WIDTH / 2 - 700 / 2, SCREEN_HEIGHT / 2 - 300 / 2, 700, 300 };
+    Rectangle nbounds = { float(SCREEN_WIDTH) / 2 - 700. / 2, float(SCREEN_HEIGHT) / 2 - 300. / 2, 700, 300 };
     const char* title = "Player name";
     const char* text = "Enter your name";
     const char* button = "Ok";
@@ -54,8 +54,8 @@ int main(void) {
     bool in_menu = true;
     int text_input_result = -1;
 
-    Rectangle selectGreenButton = { SCREEN_WIDTH / 4 - 300 / 2, SCREEN_HEIGHT / 2 - 150 / 2, 300, 150 };
-    Rectangle selectBlueButton = { SCREEN_WIDTH  * 3 / 4 - 300 / 2, SCREEN_HEIGHT / 2 - 150 / 2, 300, 150 };
+    Rectangle selectGreenButton = { float(SCREEN_WIDTH) / 4 - 300. / 2, float(SCREEN_HEIGHT) / 2 - 150. / 2, 300, 150 };
+    Rectangle selectBlueButton = { float(SCREEN_WIDTH)  * 3 / 4 - 300. / 2, float(SCREEN_HEIGHT) / 2 - 150. / 2, 300, 150 };
 
     int btnState = Normal;
     bool btnAction = false, btnAction2 = false;
