@@ -15,7 +15,7 @@ set(AUTHOR_NAME shaun)
 # set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS True)
 
-file(GLOB SOURCES "*.cpp")
+file(GLOB SOURCES "src/*.cpp")
 
 add_executable(
   ${PROJECT_NAME}
