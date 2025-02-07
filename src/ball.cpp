@@ -1,8 +1,15 @@
 #include <ball.h>
 #include <raylib.h>
 #include <state.h>
+#include <constants.h>
 
-Ball::Ball(State& state, Color color) : state(state), color(color) {}
+Ball::Ball(State& state, Color color) : state(state), color(color) {
+    this->x = float(SCREEN_WIDTH) / 2;
+    this->y = float(SCREEN_HEIGHT) / 2;
+    this->radius = BALL_RADIUS;
+    this->speed_x = BALL_SPEED_X;
+    this->speed_y = BALL_SPEED_Y;
+}
 // Ball::Ball(State& state) {
 //     this->state = state;
 // }

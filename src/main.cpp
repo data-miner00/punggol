@@ -16,11 +16,6 @@ int main(void) {
     State state;
 
     Ball ball{ state, WHITE };
-    ball.x = float(SCREEN_WIDTH) / 2;
-    ball.y = float(SCREEN_HEIGHT) / 2;
-    ball.radius = BALL_RADIUS;
-    ball.speed_x = BALL_SPEED_X;
-    ball.speed_y = BALL_SPEED_Y;
 
     AiPaddle player1{ state };
     player1.x = 10;
