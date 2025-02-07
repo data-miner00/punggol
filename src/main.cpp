@@ -155,14 +155,7 @@ int main(void) {
         state.drawPlayer2Score(name);
 
         if (state.isPaused) {
-            state.pausedTimestamp++;
-            if (state.pausedTimestamp % 60 == 0) {
-                state.blinkShow = !state.blinkShow;
-            }
-            if (state.blinkShow) {
-                int pause_width = MeasureText("PAUSED", 40);
-                DrawText("PAUSED", SCREEN_WIDTH / 2 - pause_width / 2, SCREEN_HEIGHT / 2 - 40 / 2, 40, WHITE);
-            }
+            state.displayGamePaused();
         }
 
         EndDrawing();

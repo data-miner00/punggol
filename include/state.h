@@ -35,5 +35,6 @@ public:
 
     void drawPlayer1Score(const char * name);
     void drawPlayer2Score(const char * name);
+    void displayGamePaused(void);
 };
 
