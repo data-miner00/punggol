@@ -1,6 +1,5 @@
 #pragma once
 #include <raylib.h>
-#include <string>
 
 enum Screen {
     EnterUsername,
@@ -34,7 +33,7 @@ public:
     bool IsGameOver(void);
     void AdvanceScreen(void);
 
-    void LoadUserAsPlayer2(std::string name);
-    void SaveUserData(std::string name, int score);
+    void drawPlayer1Score(const char * name);
+    void drawPlayer2Score(const char * name);
 };
 

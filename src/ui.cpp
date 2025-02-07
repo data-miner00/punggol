@@ -27,4 +27,3 @@ void DrawGameOver() {
     int label_width = MeasureText(game_over, font_size);
     DrawText(game_over, SCREEN_WIDTH / 2 - label_width / 2, SCREEN_HEIGHT / 2 - font_size / 2, 50, WHITE);
 }
-

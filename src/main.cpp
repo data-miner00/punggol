@@ -83,7 +83,6 @@ int main(void) {
             state.mousePoint = GetMousePosition();
             btnAction = false;
 
-            // Check button state
             if (CheckCollisionPointRec(state.mousePoint, selectGreenButton))
             {
                 if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) btnState = Pressed;
@@ -157,14 +156,8 @@ int main(void) {
             player3.draw();
         }
 
-        const char* player1_label = TextFormat("Player 1: %i", state.player1_score);
-        const char* player2_label = TextFormat("%s: %i", name, state.player2_score);
-
-        int player1_score_text_width = MeasureText(player1_label, SCORE_FONT_SIZE);
-        int player2_score_text_width = MeasureText(player2_label, SCORE_FONT_SIZE);
-
-        DrawText(player1_label, SCREEN_WIDTH / 4 - player1_score_text_width / 2, 20, SCORE_FONT_SIZE, WHITE);
-        DrawText(player2_label, SCREEN_WIDTH * 3 / 4 - player2_score_text_width / 2, 20, SCORE_FONT_SIZE, WHITE);
+        state.drawPlayer1Score("Player 1");
+        state.drawPlayer2Score(name);
 
         if (state.isPaused) {
             state.pausedTimestamp++;
