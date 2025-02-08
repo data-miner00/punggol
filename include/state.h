@@ -22,13 +22,15 @@ public:
     bool respawnMiddle = true;
 
     Screen currentScreen = EnterUsername;
-    Color ballColor = WHITE;
 
     long pausedTimestamp = 0;
     bool blinkShow = true;
     bool aiMode = false;
 
     Vector2 mousePoint = { .0f, .0f };
+
+    bool maxScoreWins = false;
+    int maxScore = 20;
 public:
     bool IsGameOver(void);
     void AdvanceScreen(void);

@@ -6,6 +6,9 @@
 #include <macros.h>
 #include <ui.h>
 #include <cstring>
+#include <raygui.h>
+
+#define MAX_INPUT_CHARS 100
 
 
 int main(void) {
@@ -41,11 +44,7 @@ int main(void) {
     char name[255];
     int text_input_result = -1;
 
-    Rectangle selectGreenButton = { float(SCREEN_WIDTH) / 4 - 300. / 2, float(SCREEN_HEIGHT) / 2 - 150. / 2, 300, 150 };
-    Rectangle selectBlueButton = { float(SCREEN_WIDTH)  * 3 / 4 - 300. / 2, float(SCREEN_HEIGHT) / 2 - 150. / 2, 300, 150 };
-
-    int btnState = Normal;
-    bool btnAction = false, btnAction2 = false;
+    int letterCount = 0;
 
     while (!WindowShouldClose()) {
         if (IsKeyPressed(KEY_P)) {
@@ -72,40 +71,45 @@ int main(void) {
 
         // Second screen
         if (state.currentScreen == GameSelection) {
-            DrawRectangleRec(selectGreenButton, GREEN);
-            DrawRectangleRec(selectBlueButton, BLUE);
-
             state.mousePoint = GetMousePosition();
-            btnAction = false;
 
-            if (CheckCollisionPointRec(state.mousePoint, selectGreenButton))
-            {
-                if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) btnState = Pressed;
-                else btnState = Hover;
+            int name_width = MeasureText("Punggol", 100);
+            DrawText("Punggol", float(SCREEN_WIDTH) / 2 - float(name_width) / 2, 100, 100, WHITE);
 
-                if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) btnAction = true;
+            float menu_box_x = float(SCREEN_WIDTH) / 2 - 125. / 2;
+            float menu_box_y = float(SCREEN_HEIGHT) / 8 - 30. / 2 + 150;
+
+            if (GuiButton((Rectangle){ float(SCREEN_WIDTH) / 2 - 125. / 2, menu_box_y + 50, 125, 30 }, GuiIconText(1, "Respawn in center"))) {
+                state.respawnMiddle = !state.respawnMiddle;
             }
-            else btnState = Normal;
 
-            if (btnAction)
-            {
+            if (GuiButton((Rectangle){ float(SCREEN_WIDTH) / 2 - 125. / 2, menu_box_y + 2 * 50, 125, 30 }, GuiIconText(2, "Ball speed"))) {
+                ball.speed_x = 20;
+                ball.speed_y = 20;
+            }
+
+            if (GuiButton((Rectangle){ float(SCREEN_WIDTH) / 2 - 125. / 2, menu_box_y + 3 * 50, 125, 30 }, GuiIconText(3, "Paddle width"))) {
+                player2.height = 200;
+            }
+
+            if (GuiButton((Rectangle){ float(SCREEN_WIDTH) / 2 - 125. / 2, menu_box_y + 4 * 50, 125, 30 }, GuiIconText(4, "Max score wins"))) {
+                state.maxScoreWins = !state.maxScoreWins;
+            }
+
+            if (GuiButton((Rectangle){ float(SCREEN_WIDTH) / 2 - 125. / 2, menu_box_y + 5 * 50, 125, 30 }, GuiIconText(5, "Green ball"))) {
                 ball.color = GREEN;
-                state.AdvanceScreen();
             }
 
-            if (CheckCollisionPointRec(state.mousePoint, selectBlueButton))
-            {
-                if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) btnState = Pressed;
-                else btnState = Hover;
-
-                if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) btnAction2 = true;
-            }
-            else btnState = Normal;
-
-            if (btnAction2)
-            {
+            if (GuiButton((Rectangle){ float(SCREEN_WIDTH) / 2 - 125. / 2, menu_box_y + 6 * 50, 125, 30 }, GuiIconText(6, "Blue ball"))) {
                 ball.color = BLUE;
+            }
+
+            if (GuiButton((Rectangle){ float(SCREEN_WIDTH) / 2 - 125. / 2, menu_box_y + 7 * 50, 125, 30 }, GuiIconText(7, "Start!"))) {
                 state.AdvanceScreen();
+            }
+
+            if (GuiButton((Rectangle){ float(SCREEN_WIDTH) / 2 - 125. / 2, menu_box_y + 8 * 50, 125, 30 }, GuiIconText(8, "Exit"))) {
+                break;
             }
 
             EndDrawing();

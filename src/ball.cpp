@@ -10,9 +10,6 @@ Ball::Ball(State& state, Color color) : state(state), color(color) {
     this->speed_x = BALL_SPEED_X;
     this->speed_y = BALL_SPEED_Y;
 }
-// Ball::Ball(State& state) {
-//     this->state = state;
-// }
 
 void Ball::draw() {
     DrawCircle(this->x, this->y, this->radius, this->color);
