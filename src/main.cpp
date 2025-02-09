@@ -112,6 +112,10 @@ int main(void) {
                 break;
             }
 
+            if (GuiButton((Rectangle){ float(SCREEN_WIDTH) / 2 - 125. / 2, menu_box_y + 9 * 50, 125, 30 }, GuiIconText(9, "AI mode"))) {
+                state.aiMode = !state.aiMode;
+            }
+
             EndDrawing();
             continue;
         }
