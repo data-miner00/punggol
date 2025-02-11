@@ -7,3 +7,6 @@ build:
 
 run:
     ./build/punggol.exe
+
+clean:
+    Remove-Item build -Recurse -Force
