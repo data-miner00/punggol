@@ -19,6 +19,7 @@ int main(void) {
     State state;
 
     Ball ball{ state, WHITE };
+    Ball ball2{ state, WHITE };
 
     AiPaddle player1{ state };
     player1.x = 10;
@@ -77,7 +78,7 @@ int main(void) {
             DrawText("Punggol", float(SCREEN_WIDTH) / 2 - float(name_width) / 2, 100, 100, WHITE);
 
             float menu_box_x = float(SCREEN_WIDTH) / 2 - 125. / 2;
-            float menu_box_y = float(SCREEN_HEIGHT) / 8 - 30. / 2 + 150;
+            float menu_box_y = float(SCREEN_HEIGHT) / 8 - 30. / 2 + 100;
 
             if (GuiButton((Rectangle){ float(SCREEN_WIDTH) / 2 - 125. / 2, menu_box_y + 50, 125, 30 }, GuiIconText(1, "Respawn in center"))) {
                 state.respawnMiddle = !state.respawnMiddle;
@@ -104,16 +105,20 @@ int main(void) {
                 ball.color = BLUE;
             }
 
-            if (GuiButton((Rectangle){ float(SCREEN_WIDTH) / 2 - 125. / 2, menu_box_y + 7 * 50, 125, 30 }, GuiIconText(7, "Start!"))) {
+            if (GuiButton((Rectangle){ float(SCREEN_WIDTH) / 2 - 125. / 2, menu_box_y + 7 * 50, 125, 30 }, GuiIconText(7, "Multi ball"))) {
+                state.multiBall = !state.multiBall;
+            }
+
+            if (GuiButton((Rectangle){ float(SCREEN_WIDTH) / 2 - 125. / 2, menu_box_y + 8 * 50, 125, 30 }, GuiIconText(8, "AI mode"))) {
+                state.aiMode = !state.aiMode;
+            }
+
+            if (GuiButton((Rectangle){ float(SCREEN_WIDTH) / 2 - 125. / 2, menu_box_y + 9 * 50, 125, 30 }, GuiIconText(9, "Start!"))) {
                 state.AdvanceScreen();
             }
 
-            if (GuiButton((Rectangle){ float(SCREEN_WIDTH) / 2 - 125. / 2, menu_box_y + 8 * 50, 125, 30 }, GuiIconText(8, "Exit"))) {
+            if (GuiButton((Rectangle){ float(SCREEN_WIDTH) / 2 - 125. / 2, menu_box_y + 10 * 50, 125, 30 }, GuiIconText(10, "Exit"))) {
                 break;
-            }
-
-            if (GuiButton((Rectangle){ float(SCREEN_WIDTH) / 2 - 125. / 2, menu_box_y + 9 * 50, 125, 30 }, GuiIconText(9, "AI mode"))) {
-                state.aiMode = !state.aiMode;
             }
 
             EndDrawing();
@@ -126,6 +131,11 @@ int main(void) {
         }
 
         ball.update();
+
+        if (state.multiBall) {
+            ball2.update();
+        }
+
         player1.update(ball.y);
 
         if (!state.aiMode) {
@@ -138,19 +148,36 @@ int main(void) {
             ball.speed_x *= -1;
         }
 
+        if (player1.checkCollisionWithBall(ball2)) {
+            ball2.speed_x *= -1;
+        }
+
         if (!state.aiMode) {
             if (player2.checkCollisionWithBall(ball)) {
                 ball.speed_x *= -1;
             }
+
+            if (player2.checkCollisionWithBall(ball2)) {
+                ball2.speed_x *= -1;
+            }
         } else {
             if (player3.checkCollisionWithBall(ball)) {
                 ball.speed_x *= -1;
+            }
+
+            if (player3.checkCollisionWithBall(ball2)) {
+                ball2.speed_x *= -1;
             }
         }
 
         DrawLine(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT, WHITE);
 
         ball.draw();
+
+        if (state.multiBall) {
+            ball2.draw();
+        }
+
         player1.draw();
 
         if (!state.aiMode) {

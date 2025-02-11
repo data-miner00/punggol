@@ -31,6 +31,7 @@ public:
 
     bool maxScoreWins = false;
     int maxScore = 20;
+    bool multiBall = false;
 public:
     bool IsGameOver(void);
     void AdvanceScreen(void);
