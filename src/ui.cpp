@@ -27,3 +27,15 @@ void DrawGameOver() {
     int label_width = MeasureText(game_over, font_size);
     DrawText(game_over, SCREEN_WIDTH / 2 - label_width / 2, SCREEN_HEIGHT / 2 - font_size / 2, 50, WHITE);
 }
+
+// I forgot why I add these but anyways
+const char* green_label = "Green";
+const char* blue_label = "Blue";
+const char* red_label = "Red";
+
+Rectangle multiBallCheckboxBound = { };
+Rectangle enableMaxScoreCheckboxBound = { };
+
+const char* multiBallCheckboxLabel = "Enable multiple balls";
+const char* enableMaxScoreCheckboxLabel = "Enable max score";
+
