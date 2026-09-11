@@ -1,7 +1,8 @@
 #pragma once
 #include <iostream>
-#include <state.h>
-#include <ball.h>
+
+#include "state.h"
+#include "ball.h"
 
 class Paddle {
 public:

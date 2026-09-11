@@ -1,10 +1,11 @@
-#include <paddle.h>
 #include <raylib.h>
-#include <state.h>
 #include <iostream>
 #include <fstream>
 #include <string.h>
-#include <ball.h>
+
+#include "paddle.h"
+#include "state.h"
+#include "ball.h"
 
 void concat(char* s1, char* s2, char* ns) {
     ns[0] = '\0';

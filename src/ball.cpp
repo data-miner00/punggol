@@ -1,7 +1,8 @@
-#include <ball.h>
 #include <raylib.h>
-#include <state.h>
-#include <constants.h>
+
+#include "ball.h"
+#include "state.h"
+#include "constants.h"
 
 Ball::Ball(State& state, Color color) : state(state), color(color) {
     this->x = float(SCREEN_WIDTH) / 2;

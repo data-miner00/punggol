@@ -1,6 +1,7 @@
 #pragma once
-#include <state.h>
 #include <raylib.h>
+
+#include "state.h"
 
 class Ball {
 public:

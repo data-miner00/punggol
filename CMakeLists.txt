@@ -27,7 +27,6 @@ set(RAYGUI_PATH "D:/src/raygui/src")
 
 target_include_directories(
   ${PROJECT_NAME}
-  PUBLIC "include"
   PUBLIC ${RAYLIB_PATH}
   PUBLIC ${RAYGUI_PATH}
 )

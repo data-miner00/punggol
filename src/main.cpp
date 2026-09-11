@@ -1,12 +1,13 @@
 #include <raylib.h>
-#include <constants.h>
-#include <paddle.h>
-#include <ball.h>
-#include <state.h>
-#include <macros.h>
-#include <ui.h>
 #include <cstring>
 #include <raygui.h>
+
+#include "constants.h"
+#include "paddle.h"
+#include "ball.h"
+#include "state.h"
+#include "macros.h"
+#include "ui.h"
 
 #define MAX_INPUT_CHARS 100
 

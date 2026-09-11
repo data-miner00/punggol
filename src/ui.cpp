@@ -1,9 +1,10 @@
-#include <ui.h>
 #include <raylib.h>
-#include <constants.h>
 
 #define RAYGUI_IMPLEMENTATION
 #include <raygui.h>
+
+#include "constants.h"
+#include "ui.h"
 
 // Text input to get user name
 const char* input_box_title = "Player name";
