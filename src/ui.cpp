@@ -20,9 +20,17 @@ bool secret_view = false;
 Rectangle nbounds = { float(SCREEN_WIDTH) / 2 - 700. / 2, float(SCREEN_HEIGHT) / 2 - 300. / 2, 700, 300 };
 
 int GetNameFromUser(char* name) {
-    return GuiTextInputBox(nbounds, input_box_title, input_box_text, input_box_button, name, 255, &secret_view);
-}
+    int btnActive = 0;
+    int result = GuiTextInputBox(nbounds, input_box_title, input_box_text, name, 255, input_box_button, &btnActive, &secret_view);
 
+    // GuiTextInputBox() now returns RESULT_PRESSED (1) for ANY interaction that
+    // closes the box (a listed button OR the window's own close icon), and
+    // reports which one via btnActive: 0 = closed via the window's close icon,
+    // 1..n = index into the ';'-separated btnText list. We only have one
+    // button ("Ok"), so btnActive doubles as our old-style result code.
+    if (result == RESULT_NONE) return -1;
+    return btnActive;
+}
 void DrawGameOver() {
     const int font_size = 50;
     int label_width = MeasureText(game_over, font_size);

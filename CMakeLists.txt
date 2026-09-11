@@ -22,8 +22,8 @@ add_executable(
   ${SOURCES}
 )
 
-set(RAYLIB_PATH "D:/src/raylib/src")
-set(RAYGUI_PATH "D:/src/raygui/src")
+set(RAYLIB_PATH "./lib/raylib/src")
+set(RAYGUI_PATH "./lib/raygui/src")
 
 target_include_directories(
   ${PROJECT_NAME}
